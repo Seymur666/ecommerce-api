@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -19,9 +21,13 @@ public class User {
     @Column(name = "id")
     Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_role_id", referencedColumnName = "id")
-    UserRole userRole;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_role_id")
+    )
+    Set<UserRole> userRoles = new HashSet<>();
 
     @Column(name = "name", nullable = false, length = 50)
     String name;
