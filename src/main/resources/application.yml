@@ -2,9 +2,9 @@ spring:
   application:
     name: ecommerce-api
   datasource:
-    url: jdbc:postgresql://localhost:5433/e_commerce
+    url: jdbc:postgresql://localhost:5432/ecommerce_api
     username: postgres
-    password: EbgpogdmhbySG666!!!
+    password: Seymur12345!
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -19,4 +19,4 @@ spring:
 #    allow-bean-definition-overriding: true
 
 server:
-  port: 8888
+  port: 6666
