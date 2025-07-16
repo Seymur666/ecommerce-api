@@ -1,9 +1,6 @@
 package com.ecommerce.api.config;
 
-//import com.ecommerce.api.security.service.CustomUserDetailsService;
-
 import com.ecommerce.api.security.jwt.JwtTokenFilter;
-import com.ecommerce.api.security.service.CustomUserDetailsService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -26,7 +23,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SecurityConfig {
     JwtTokenFilter jwtTokenFilter;
-    CustomUserDetailsService customUserDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -51,40 +47,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
-
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//    }
-
-
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        InMemoryUserDetailsManager inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
-//
-//        User user = new User("Seymur", "$2a$10$DRcEeEF1rF/52kjeZZF44OdlyGuqU56ACb7zZd9mnRn9vtoLUYyhO", List.of());
-//
-//        inMemoryUserDetailsManager.createUser(user);
-//
-//        return inMemoryUserDetailsManager;
-//    }
-
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return customUserDetailsService;
-//    }
-
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.httpBasic(Customizer.withDefaults());
-//
-//        http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
-//                .requestMatchers("/api/v1/demo")
-//                .permitAll()
-//                .anyRequest().authenticated()
-//        );
-//
-//        return http.build();
-//    }
 }
