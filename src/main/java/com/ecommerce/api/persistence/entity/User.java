@@ -16,7 +16,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@SQLRestriction("is_active=true")
+//@SQLRestriction("is_active=true")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,7 +64,11 @@ public class User {
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+
+        if (this.isActive == null) this.isActive = true;
+        if (this.isDelete == null) this.isDelete = false;
     }
+
 
     @PreUpdate
     protected void onUpdate() {
