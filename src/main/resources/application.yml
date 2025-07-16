@@ -20,3 +20,10 @@ spring:
 
 server:
   port: 6666
+
+jwt:
+  secret: MySuperSecretJwtKeyThatShouldBeLongEnough
+  access:
+    expiration: 3600000 # 1 hour
+  refresh:
+    expiration: 7200000 # 2 hours
