@@ -22,8 +22,8 @@ server:
   port: 6666
 
 jwt:
-  secret: MySuperSecretJwtKeyThatShouldBeLongEnough
+  secret: dGVzdC1zZWNyZXQtdG8tbWVldC1taW5pbXVtLWJpdC1yZXF1aXJlbWVudA==
   access:
-    expiration: 3600000 # 1 hour
+    expiration: 900000   # 15 минут
   refresh:
-    expiration: 7200000 # 2 hours
+    expiration: 604800000 # 7 дней

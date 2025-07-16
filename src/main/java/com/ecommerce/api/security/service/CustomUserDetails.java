@@ -1,4 +1,4 @@
-package com.ecommerce.api.security;
+package com.ecommerce.api.security.service;
 
 import com.ecommerce.api.persistence.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getName();
+        return user.getEmail();
     }
 
 //    @Override
