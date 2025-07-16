@@ -49,8 +49,6 @@ public class User {
     @Column(name = "is_delete", nullable = false)
     Boolean isDelete;
 
-    // salam
-
     @Column(name = "delete_by")
     Long deleteBy;
 
