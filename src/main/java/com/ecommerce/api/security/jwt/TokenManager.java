@@ -1,6 +1,9 @@
 package com.ecommerce.api.security.jwt;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
@@ -16,19 +19,6 @@ import java.util.Map;
 @Component
 @Getter
 public class TokenManager {
-//    private final SecretKey secretKey;
-//
-//    @Value("${jwt.access.expiration}")
-//    private int accessTokenValidatePeriod;
-//
-//    @Value("${jwt.refresh.expiration}")
-//    private int refreshTokenValidatePeriod;
-//
-//    public TokenManager(@Value("${jwt.secret}") String jwtSecret) {
-//        byte[] decodedKey = Base64.getDecoder().decode(jwtSecret);
-//        this.secretKey = Keys.hmacShaKeyFor(decodedKey);
-//    }
-
     @Value("${jwt.secret}")
     private String jwtSecret;
 
@@ -68,16 +58,6 @@ public class TokenManager {
                 .compact();
     }
 
-//    private String buildToken(String userEmail, int expirationTime, String roles) {
-//        return Jwts.builder()
-//                .setSubject(userEmail)
-//                .claim("roles", roles)
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-//                .signWith(SignatureAlgorithm.HS256, jwtSecret)
-//                .compact();
-//    }
-
     public boolean validateToken(String token) {
         try {
             getClaims(token);
@@ -98,11 +78,4 @@ public class TokenManager {
                 .parseClaimsJws(token)
                 .getBody();
     }
-
-//    public Claims getClaims(String token) {
-//        return Jwts.parser()
-//                .setSigningKey(jwtSecret)
-//                .parseClaimsJws(token)
-//                .getBody();
-//    }
 }
