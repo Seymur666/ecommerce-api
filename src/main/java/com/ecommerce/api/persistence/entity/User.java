@@ -43,10 +43,10 @@ public class User {
     @Column(name = "password", nullable = false, length = 255)
     String password;
 
-    @Column(name = "is_active")
+    @Column(name = "is_active", nullable = false)
     Boolean isActive;
 
-    @Column(name = "is_delete")
+    @Column(name = "is_delete", nullable = false)
     Boolean isDelete;
 
     @Column(name = "delete_by")
