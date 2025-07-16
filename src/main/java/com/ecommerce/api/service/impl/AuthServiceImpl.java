@@ -1,5 +1,6 @@
 package com.ecommerce.api.service.impl;
 
+import com.ecommerce.api.config.TokenManager;
 import com.ecommerce.api.dto.request.LoginRequestDTO;
 import com.ecommerce.api.dto.request.RegisterRequestDTO;
 import com.ecommerce.api.dto.response.ResponseDTO;
@@ -17,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -24,10 +27,10 @@ public class AuthServiceImpl implements AuthService {
     UserRepository userRepository;
     UserRoleRepository userRoleRepository;
     PasswordEncoder passwordEncoder;
+    TokenManager tokenManager;
 
     @Override
     public ResponseDTO register(RegisterRequestDTO registerRequestDTO) {
-
         if (userRepository.findByEmail(registerRequestDTO.getEmail()).isPresent()) {
             throw new RuntimeException("User already exists");
         }
@@ -35,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
         User user = UserMapper.dtoToEntity(registerRequestDTO, passwordEncoder);
 
         UserRole userRole = userRoleRepository.findByRoleName(RoleName.ROLE_USER)
-                        .orElseThrow(() -> new RuntimeException("User role not found"));
+                .orElseThrow(() -> new RuntimeException("User role not found"));
 
         user.getUserRoles().add(userRole);
 
@@ -56,6 +59,18 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("Password is incorrect");
         }
 
-        return null;
+        String roles = user.getUserRoles()
+                .stream()
+                .map(r -> r.getRoleName().name())
+                .reduce((a, b) -> a + "," + b)
+                .orElse("");
+
+        Map<String, String> tokens = tokenManager.generateToken(user.getEmail(), roles);
+
+        return ResponseDTO.builder()
+                .status(HttpStatus.OK.value())
+                .message("Login successful")
+                .data(tokens)
+                .build();
     }
 }
