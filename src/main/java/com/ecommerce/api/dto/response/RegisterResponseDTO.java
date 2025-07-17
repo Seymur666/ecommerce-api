@@ -10,6 +10,4 @@ public class RegisterResponseDTO {
     String name;
     String surname;
     String email;
-    String accessToken;
-    String refreshToken;
 }

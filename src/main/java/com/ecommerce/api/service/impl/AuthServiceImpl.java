@@ -53,26 +53,13 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ROLE_NOT_FOUND));
 
         user.getUserRoles().add(userRole);
-
         User savedUser = userRepository.save(user);
 
-        // Генерация ролей в строку для токена
-        String roles = savedUser.getUserRoles()
-                .stream()
-                .map(r -> r.getRoleName().name())
-                .collect(Collectors.joining(","));
-
-        // Генерация токенов
-        Map<String, String> tokens = tokenManager.generateToken(savedUser.getEmail(), roles);
-
-        // Создание ответа
         RegisterResponseDTO response = new RegisterResponseDTO(
                 savedUser.getId(),
                 savedUser.getName(),
                 savedUser.getSurname(),
-                savedUser.getEmail(),
-                tokens.get("accessToken"),
-                tokens.get("refreshToken")
+                savedUser.getEmail()
         );
 
         return BaseResponse.buildResponse(HttpStatus.CREATED, USER_REGISTERED_SUCCESSFULLY, response).toResponseEntity();
