@@ -1,11 +1,8 @@
 package com.ecommerce.api.persistence.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -13,17 +10,19 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-//@SQLRestriction("is_active=true")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(exclude = "userRoles")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @EqualsAndHashCode.Include
     Long id;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_user_role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -62,16 +61,14 @@ public class User {
     LocalDateTime createdAt;
 
     @PrePersist
-    protected void onCreate() {
+    private void onCreate() {
         this.createdAt = LocalDateTime.now();
-
-        if (this.isActive == null) this.isActive = true;
-        if (this.isDelete == null) this.isDelete = false;
+        if (isActive == null) isActive = true;
+        if (isDelete == null) isDelete = false;
     }
 
-
     @PreUpdate
-    protected void onUpdate() {
-        this.updateAt = LocalDateTime.now();
+    private void onUpdate() {
+        updateAt = LocalDateTime.now();
     }
 }
